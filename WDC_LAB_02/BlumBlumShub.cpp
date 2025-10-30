@@ -1,7 +1,23 @@
 #include "BlumBlumShub.h"
 #include <boost/multiprecision/cpp_int.hpp>
+#include <random>
 
 using namespace boost::multiprecision;
+
+BlumBlumShub::BlumBlumShub(const cpp_int& _p, const cpp_int& _q)
+{
+    if (_p % 4 != 3 || _q % 4 != 3)
+        throw std::invalid_argument("p and q must be congruent to 3 mod 4");
+    this->p = _p;
+    this->q = _q;
+    this->N = _p * _q;
+    this->seed = makeACoprimeSeed(N);
+    this->xi_state = (seed * seed) % N;
+}
+
+BlumBlumShub::~BlumBlumShub()
+{
+}
 
 cpp_int BlumBlumShub::gcd(const cpp_int& a, const cpp_int& b)
 {
@@ -13,23 +29,6 @@ cpp_int BlumBlumShub::gcd(const cpp_int& a, const cpp_int& b)
         x = t;
     }
     return x;
-}
-
-BlumBlumShub::BlumBlumShub(const cpp_int& _p, const cpp_int& _q, const cpp_int& _seed)
-{
-    if (_p % 4 != 3 || _q % 4 != 3)
-        throw std::invalid_argument("p and q must be congruent to 3 mod 4");
-    this->p = _p;
-    this->q = _q;
-    this->seed = _seed;
-    this->N = _p * _q;
-    if (gcd(seed, N) != 1)
-        throw std::invalid_argument("Seed must be coprime with N");
-    this->xi_state = (seed * seed) % N;
-}
-
-BlumBlumShub::~BlumBlumShub()
-{
 }
 
 uint8_t BlumBlumShub::nextBit()
@@ -58,4 +57,33 @@ std::vector<uint8_t> BlumBlumShub::makeBytes(size_t k)
         res.push_back(byte);
     }
     return res;
+}
+
+cpp_int BlumBlumShub::makeRandomBigInt(const cpp_int& N)
+{
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution<uint64_t> dist(0, UINT64_MAX);
+
+    cpp_int value = 0;
+    size_t bits = msb(N);              
+    size_t chunks = (bits + 63) / 64;  
+
+    for (size_t i = 0; i < chunks; ++i) 
+    {
+        value <<= 64;
+        value += dist(gen);
+    }
+
+    return value % (N - 1) + 1;
+}
+
+cpp_int BlumBlumShub::makeACoprimeSeed(const cpp_int& N)
+{
+    cpp_int seed;
+    do 
+    {
+        seed = BlumBlumShub::makeRandomBigInt(N);
+    } while (gcd(seed, N) != 1);
+    return seed;
 }

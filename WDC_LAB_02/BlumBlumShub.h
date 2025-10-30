@@ -1,10 +1,9 @@
 #pragma once
-
-#include <math.h>
 #include <iostream>
-#include <numeric>
 #include <vector>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <random>
+
 using namespace boost::multiprecision;
 
 
@@ -13,6 +12,8 @@ class BlumBlumShub
 private:
 	//functions
 	cpp_int gcd(const cpp_int& a, const cpp_int& b);
+	cpp_int makeRandomBigInt(const cpp_int& N);
+	cpp_int makeACoprimeSeed(const cpp_int& N);
 	//variables
 	cpp_int p;
 	cpp_int q;
@@ -22,7 +23,7 @@ private:
 
 public:
 	//constructor / deconstructor
-	BlumBlumShub(const cpp_int& _p, const cpp_int& _q, const cpp_int& _seed);
+	BlumBlumShub(const cpp_int& _p, const cpp_int& _q);
 	virtual ~BlumBlumShub();
 	//functions
 	uint8_t nextBit();
