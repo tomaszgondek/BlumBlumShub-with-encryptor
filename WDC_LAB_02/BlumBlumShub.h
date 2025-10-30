@@ -6,7 +6,6 @@
 
 using namespace boost::multiprecision;
 
-
 class BlumBlumShub
 {
 private:
@@ -17,7 +16,6 @@ private:
 	//variables
 	cpp_int p;
 	cpp_int q;
-	cpp_int seed;
 	cpp_int N;
 	cpp_int xi_state;
 
@@ -29,4 +27,6 @@ public:
 	uint8_t nextBit();
 	std::vector<uint8_t>makeBits(size_t k);
 	std::vector<uint8_t>makeBytes(size_t k);
+	//variables
+	cpp_int seed;
 };

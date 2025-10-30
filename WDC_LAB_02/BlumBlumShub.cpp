@@ -1,6 +1,4 @@
 #include "BlumBlumShub.h"
-#include <boost/multiprecision/cpp_int.hpp>
-#include <random>
 
 using namespace boost::multiprecision;
 
@@ -33,7 +31,7 @@ cpp_int BlumBlumShub::gcd(const cpp_int& a, const cpp_int& b)
 
 uint8_t BlumBlumShub::nextBit()
 {
-    xi_state = (xi_state * xi_state) % N; // x_{i+1} = x_i^2 mod N
+    xi_state = (xi_state * xi_state) % N; 
     return static_cast<uint8_t>(xi_state % 2);
 }
 
@@ -41,6 +39,7 @@ std::vector<uint8_t> BlumBlumShub::makeBits(size_t k)
 {
     std::vector<uint8_t> bits;
     bits.reserve(k);
+    std::cout << "Generetaing " << k << " bits" << "\n";
     for (size_t i = 0; i < k; ++i)
         bits.push_back(nextBit());
     return bits;
@@ -64,17 +63,14 @@ cpp_int BlumBlumShub::makeRandomBigInt(const cpp_int& N)
     std::random_device rd;
     std::mt19937_64 gen(rd());
     std::uniform_int_distribution<uint64_t> dist(0, UINT64_MAX);
-
     cpp_int value = 0;
     size_t bits = msb(N);              
     size_t chunks = (bits + 63) / 64;  
-
     for (size_t i = 0; i < chunks; ++i) 
     {
         value <<= 64;
         value += dist(gen);
     }
-
     return value % (N - 1) + 1;
 }
 

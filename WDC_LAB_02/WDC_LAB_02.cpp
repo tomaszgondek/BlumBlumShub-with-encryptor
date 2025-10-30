@@ -2,17 +2,14 @@
 
 int main() 
 {
-    cpp_int p = 11;
-    cpp_int q = 1;
+    cpp_int p = 499;
+    cpp_int q = 547;
 
     BlumBlumShub bbs(p, q);
 
-    auto bits = bbs.makeBits(40);
+    auto bits = bbs.makeBits(100);
     std::cout << "Bits: ";
     for (auto b : bits) std::cout << int(b);
     std::cout << "\n";
-    auto bytes = bbs.makeBytes(5);
-    std::cout << "Bytes: ";
-    for (auto b : bytes) std::cout << std::hex << (int)b << " ";
-    std::cout << std::dec << "\n";
+    std::cout << "The seed was: " << bbs.seed << "\n";
 }
