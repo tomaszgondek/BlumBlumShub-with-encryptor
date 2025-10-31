@@ -1,12 +1,26 @@
 ﻿#include "BlumBlumShub.h"
 #include "NistStats.h"
 #include "Encryptor.h"
-
+#include <fstream>
+#include <sstream>
 int main() 
 {
     cpp_int p = 499;
     cpp_int q = 547;
-    std::string message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+    std::string path;
+    std::cout << "Enter path to the message file: ";
+    std::getline(std::cin, path);
+    std::ifstream file(path);
+    if (!file) 
+    {
+        std::cerr << "Error: could not open file: " << path << "\n";
+        return 1;
+    }
+    std::cout << "\n";
+    std::ostringstream buffer;
+    buffer << file.rdbuf();          
+    std::string message = buffer.str();
+    file.close();
     BlumBlumShub bbs(p, q);
     std::cout << "1.\n Generating bits with BlumBlumShub generator\n";
     auto key = bbs.makeBits(10000);
@@ -26,4 +40,22 @@ int main()
     auto decryptedMessageBits = decryptMessage(encryptedMessageBits, key);
     std::cout << "Message after decryption:\n";
     std::cout << bitsToText(decryptedMessageBits);
+    std::string outPath;
+    std::cout << "\nEnter path to save encrypted message: ";
+    std::getline(std::cin, outPath);
+    std::ofstream outFile(outPath);
+    if (!outFile) 
+    {
+        std::cerr << "Error: could not create file: " << outPath << "\n";
+        return 1;
+    }
+    outFile << "=== BlumBlumShub Encrypted Output ===\n";
+    for (size_t i = 0; i < key.size(); i++)
+        outFile << int(key[i]);
+    outFile << "\n\n";
+    outFile << "Encrypted message:\n";
+    outFile << bitsToText(encryptedMessageBits) << "\n";
+    outFile.close();
+    std::cout << "Encrypted message and key saved to: " << outPath << "\n";
+
 }
