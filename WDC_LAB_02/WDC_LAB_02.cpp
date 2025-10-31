@@ -1,5 +1,6 @@
 ﻿#include "BlumBlumShub.h"
 #include "NistStats.h"
+#include "Encryptor.h"
 
 int main() 
 {

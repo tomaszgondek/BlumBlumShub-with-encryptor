@@ -124,11 +124,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlumBlumShub.cpp" />
+    <ClCompile Include="Encryptor.cpp" />
     <ClCompile Include="NistStats.cpp" />
     <ClCompile Include="WDC_LAB_02.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlumBlumShub.h" />
+    <ClInclude Include="Encryptor.h" />
     <ClInclude Include="NistStats.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -67,7 +67,7 @@ cpp_int BlumBlumShub::makeRandomBigInt(const cpp_int& N)
     cpp_int value = 0;
     size_t bits = msb(N);              
     size_t chunks = (bits + 63) / 64;  
-    for (size_t i = 0; i < chunks; ++i) 
+    for (size_t i = 0; i < chunks; i++)
     {
         value <<= 64;
         value += dist(gen);
