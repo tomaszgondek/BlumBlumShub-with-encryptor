@@ -1,13 +1,14 @@
 #include "NistStats.h"
 #include <vector>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <boost/math/special_functions/gamma.hpp>
 #include <iostream>
 #include <math.h>
 using namespace boost::multiprecision;
 
 bool monobitTest(std::vector<uint8_t> v)
 {
-	std::cout << "Monobit test begin\n";
+	std::cout << "\nMonobit test begin\n";
 	int64_t sum = 0;
 	float s_obs = 0;
 	float p_val = 0;
@@ -28,12 +29,62 @@ bool monobitTest(std::vector<uint8_t> v)
 	std::cout << "P value: " << p_val << "\n";
 	if (p_val < 0.01)
 	{
-		std::cout << "Sequence is not random, P value is lower than 0.01 \n";
+		std::cout << "Sequence is not random, P value is lower than 0.01 \n\n";
 		return 0;
 	}
 	else 
 	{
-		std::cout << "Sequence is random, P value is higher than 0.01 \n";
+		std::cout << "Sequence is random, P value is higher than 0.01 \n\n";
+		return 1;
+	}
+}
+
+bool frequencyWithinBlockTest(std::vector<uint8_t> v)
+{
+	std::cout << "\nFrequency within a block test begin\n";
+	uint64_t M, n = 0;
+	if (v.size() < 400)
+	{
+		std::cout << "Vector is too small to yield meaningful results\n";
+		return 0;
+	}
+	else if (v.size() >= 400 && v.size() < 1000)
+	{
+		M = 20;
+	}
+	else if (v.size() >= 1000 && v.size() < 10000)
+	{
+		M = 50;
+	}
+	else
+	{
+		M = 50;
+	}
+	n = v.size() / M;
+	std::cout << "M: " << M << ", n: " << n << "\n";
+	double chi_square = 0.0;
+	for (uint64_t i = 0; i < n; ++i)
+	{
+		uint64_t ones = 0;
+		for (uint64_t j = 0; j < M; ++j)
+		{
+			ones += v[i * M + j];
+		}
+		double pi = static_cast<double>(ones) / M; 
+		chi_square += std::pow(pi - 0.5, 2);
+	}
+	chi_square *= 4.0 * M;
+	std::cout << "Chi-square: " << chi_square << "\n";
+	double p_val = boost::math::gamma_q(static_cast<double>(n) / 2.0, chi_square / 2.0);
+	std::cout << "P value: " << p_val << "\n";
+	if (p_val < 0.01)
+	{
+		std::cout << "Sequence is not random, P value is lower than 0.01 \n\n";
+		return 0;
+	}
+	else
+	{
+		std::cout << "Sequence is random, P value is higher than 0.01 \n\n";
 		return 1;
 	}
 }

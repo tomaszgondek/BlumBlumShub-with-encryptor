@@ -4,3 +4,4 @@
 #include <iostream>
 
 bool monobitTest(std::vector<uint8_t> v);
+bool frequencyWithinBlockTest(std::vector<uint8_t> v);
