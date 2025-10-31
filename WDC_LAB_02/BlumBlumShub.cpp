@@ -4,7 +4,7 @@ using namespace boost::multiprecision;
 
 BlumBlumShub::BlumBlumShub(const cpp_int& _p, const cpp_int& _q)
 {
-    std::cout << "RNG Blum Blum Shaft starts\n\n";
+    //std::cout << "RNG Blum Blum Shaft starts\n\n";
     if (_p % 4 != 3 || _q % 4 != 3)
         throw std::invalid_argument("p and q must be congruent to 3 mod 4");
     this->p = _p;
@@ -40,7 +40,7 @@ std::vector<uint8_t> BlumBlumShub::makeBits(size_t k)
 {
     std::vector<uint8_t> bits;
     bits.reserve(k);
-    std::cout << "Generetaing " << k << " bits..." << "\n\n";
+    //std::cout << "Generetaing " << k << " bits..." << "\n\n";
     for (size_t i = 0; i < k; ++i)
         bits.push_back(nextBit());
     return bits;
@@ -82,6 +82,6 @@ cpp_int BlumBlumShub::makeACoprimeSeed(const cpp_int& N)
     {
         seed = BlumBlumShub::makeRandomBigInt(N);
     } while (gcd(seed, N) != 1);
-    std::cout << "The seed is: " << seed << "\n\n";
+    //std::cout << "The seed is: " << seed << "\n\n";
     return seed;
 }

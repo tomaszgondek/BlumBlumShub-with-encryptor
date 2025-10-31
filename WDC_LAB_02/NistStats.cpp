@@ -8,7 +8,7 @@ using namespace boost::multiprecision;
 
 bool monobitTest(std::vector<uint8_t> v)
 {
-	std::cout << "\nMonobit test begin\n";
+	//std::cout << "\nMonobit test begin\n";
 	int64_t sum = 0;
 	float s_obs = 0;
 	float p_val = 0;
@@ -23,29 +23,29 @@ bool monobitTest(std::vector<uint8_t> v)
 			sum -= 1;
 		}
 	}
-	std::cout << "Sum: " << sum << "\n";
+	//std::cout << "Sum: " << sum << "\n";
 	s_obs = static_cast<float>(abs(sum) / sqrt(static_cast<double>(v.size())));
 	p_val = erfc(static_cast<float>(s_obs / 1.41421356237));
-	std::cout << "P value: " << p_val << "\n";
+	//std::cout << "P value: " << p_val << "\n";
 	if (p_val < 0.01)
 	{
-		std::cout << "Sequence is not random, P value is lower than 0.01 \n\n";
+		//std::cout << "Sequence is not random, P value is lower than 0.01 \n\n";
 		return 0;
 	}
 	else 
 	{
-		std::cout << "Sequence is random, P value is higher than 0.01 \n\n";
+		//std::cout << "Sequence is random, P value is higher than 0.01 \n\n";
 		return 1;
 	}
 }
 
 bool frequencyWithinBlockTest(std::vector<uint8_t> v)
 {
-	std::cout << "\nFrequency within a block test begin\n";
+	//std::cout << "\nFrequency within a block test begin\n";
 	uint64_t M, n = 0;
 	if (v.size() < 400)
 	{
-		std::cout << "Vector is too small to yield meaningful results\n";
+		std::cerr << "Vector is too small to yield meaningful results\n";
 		return 0;
 	}
 	else if (v.size() >= 400 && v.size() < 1000)
@@ -61,7 +61,7 @@ bool frequencyWithinBlockTest(std::vector<uint8_t> v)
 		M = 50;
 	}
 	n = v.size() / M;
-	std::cout << "M: " << M << ", n: " << n << "\n";
+	//std::cout << "M: " << M << ", n: " << n << "\n";
 	double chi_square = 0.0;
 	for (uint64_t i = 0; i < n; ++i)
 	{
@@ -74,17 +74,17 @@ bool frequencyWithinBlockTest(std::vector<uint8_t> v)
 		chi_square += std::pow(pi - 0.5, 2);
 	}
 	chi_square *= 4.0 * M;
-	std::cout << "Chi-square: " << chi_square << "\n";
+	//std::cout << "Chi-square: " << chi_square << "\n";
 	double p_val = boost::math::gamma_q(static_cast<double>(n) / 2.0, chi_square / 2.0);
-	std::cout << "P value: " << p_val << "\n";
+	//std::cout << "P value: " << p_val << "\n";
 	if (p_val < 0.01)
 	{
-		std::cout << "Sequence is not random, P value is lower than 0.01 \n\n";
+		//std::cout << "Sequence is not random, P value is lower than 0.01 \n\n";
 		return 0;
 	}
 	else
 	{
-		std::cout << "Sequence is random, P value is higher than 0.01 \n\n";
+		//std::cout << "Sequence is random, P value is higher than 0.01 \n\n";
 		return 1;
 	}
 }
