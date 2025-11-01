@@ -5,8 +5,8 @@
 #include <sstream>
 int main() 
 {
-    cpp_int p = 499;
-    cpp_int q = 547;
+    cpp_int p("91777237090291353103989894182185945674257000143945633478631741458952691840031438763154345784481010888003008833208980426431265478111827053121753567075866788790583972287892135096866625241368941502637826296339133850089972171595470272552783581782636830770605126507159065272854466161640254904752074945652530746983");
+    cpp_int q("153345449593756101827622485891574961545180946420557464261495245607567632005526380071055108122229387034936937856376565767814969199001789595780567448347730118700043815773987857360793291228359669929856174933407917162754123320813180202591112098603849743469699340719988055991864553268426994169715792761335584273703");
     std::string path;
     std::cout << "Enter path to the message file: ";
     std::getline(std::cin, path);
@@ -23,7 +23,7 @@ int main()
     file.close();
     BlumBlumShub bbs(p, q);
     std::cout << "1.\n Generating bits with BlumBlumShub generator\n";
-    auto key = bbs.makeBits(10000);
+    auto key = bbs.makeBits(message.length()*8);
     std::cout << "Key is ready\n";
     std::cout << "Statistics tests: \n";
     std::cout << "Frequency within block \n";
@@ -49,13 +49,18 @@ int main()
         std::cerr << "Error: could not create file: " << outPath << "\n";
         return 1;
     }
-    outFile << "=== BlumBlumShub Encrypted Output ===\n";
+    outFile << "=== KEY ===\n";
     for (size_t i = 0; i < key.size(); i++)
         outFile << int(key[i]);
+    outFile << "\n=== END ===";
     outFile << "\n\n";
     outFile << "Encrypted message:\n";
+    outFile << "=== Bits ===\n";
+    for (size_t i = 0; i < encryptedMessageBits.size(); i++)
+        outFile << int(encryptedMessageBits[i]);
+    outFile << "\n=== END ===\n\n";
+    outFile << "Encrypted message in text:\n";
     outFile << bitsToText(encryptedMessageBits) << "\n";
     outFile.close();
     std::cout << "Encrypted message and key saved to: " << outPath << "\n";
-
 }
