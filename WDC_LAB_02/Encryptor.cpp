@@ -1,3 +1,7 @@
+/*
+* This module handles data transformation, encryption and decryption. 
+*/
+
 #include "Encryptor.h"
 
 std::vector<uint8_t> textToBits(const std::string& msg)
@@ -18,7 +22,7 @@ std::vector<uint8_t> encryptMessage(const std::vector<uint8_t> m, const std::vec
     if (k.size() < m.size()) throw std::invalid_argument("Key is too short!");
     for (uint64_t i = 0; i < m.size(); i++)
     {
-        encrypted.push_back(m[i] ^ k[i]);
+        encrypted.push_back(m[i] ^ k[i]); //Bitwise XOR
     }
     return encrypted;
 }
@@ -30,7 +34,7 @@ std::vector<uint8_t> decryptMessage(const std::vector<uint8_t> m, const std::vec
     if (k.size() < m.size()) throw std::invalid_argument("Key is too short!");
     for (uint64_t i = 0; i < m.size(); i++)
     {
-        decrypted.push_back(m[i] ^ k[i]);
+        decrypted.push_back(m[i] ^ k[i]); //Bitwise XOR is its own inverse
     }
     return decrypted;
 }
