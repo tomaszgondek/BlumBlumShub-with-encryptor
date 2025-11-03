@@ -31,13 +31,15 @@ int main()
         if (monobitTest(key)) std::cout << "P value is lower than 0.01, sequence is random\n";
         else std::cout << "P value is larger than 0.01, sequence is not random\n";
         std::cout << "\n2.\n Encrypting message\n";
-        std::cout << "Message: " << message << "\n";
+        std::cout << "Message: \n" << message << "\n";
         auto encryptedMessageBits = encryptMessage(textToBits(message), key);
-        std::cout << "Message after encryption: " << bitsToText(encryptedMessageBits) << "\n";
+        auto encryptedMessageText = bitsToText(encryptedMessageBits);
+        std::cout << "Message after encryption: " << encryptedMessageText << "\n";
         std::cout << "\n3.\n Decrypting message\n";
         auto decryptedMessageBits = decryptMessage(encryptedMessageBits, key);
+        auto decryptedMessageText = bitsToText(decryptedMessageBits);
         std::cout << "Message after decryption:\n";
-        std::cout << bitsToText(decryptedMessageBits);
+        std::cout << decryptedMessageText;
         std::string outPath;
         std::cout << "\nEnter path to save encrypted message: ";
         std::getline(std::cin, outPath);
