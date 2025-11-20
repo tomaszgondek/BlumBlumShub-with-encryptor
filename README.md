@@ -1,3 +1,5 @@
+https://github.com/tomaszgondek/BlumBlumShub_with_encryptor.git
+
 A simple code, really. It lacks proper error handling so when something is not right it just closes.
 Made for introductory course on cybersecurity excercise.
 
